@@ -1,0 +1,79 @@
+---
+title: "individual1"
+author: "Brett Santema"
+date: "2/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Note: I did not have a partner for this lab as I wasn't able to make it to class, but I am submitting individual answers to everything for partial credit. 
+
+```{r}
+choco <- read.csv("https://xdaiisu.github.io/ds202materials/hwlabs/choco.csv")
+head(choco)
+```
+
+## 1. How are ratings dsitrubuted?
+The ratings are mostly clusterd around the center, with the majority of ratings being between 2.5 and 3.5. The are almost no ratings above 4, but there are a considerable amount of rating between 1 and 2.5. Overall, the ratings seem a bit skewed towards the unsatisfactory side. 
+
+## Draw a histogram of the ratings and describe it.
+```{r}
+hist(choco$Rating)
+```
+
+## 2. Do ratings depend on the cacao percentage of a chocolate bar?
+```{r}
+plot(choco$Cocoa, choco$Rating)
+```
+
+Based on the scatterplot, no, the ratings don't depend on the actual cacao percentage in the chocolate bar. 
+
+## What is the overall number of chocolate bars rated?
+```{r}
+nrow(choco)
+```
+
+
+## How does the number of ratings depend on the year?
+
+As can be seen by the bar chart below, the number of ratings has increased over time. However, there are not many ratings for the most recent year, which might be because the year is not over yet or the ratings are still being processed. 
+
+## Draw a bar chart of the number of reports. 
+```{r}
+yearCounts <- table(choco$Review.Date)
+barplot(yearCounts)
+```
+
+## Which are the three locations with the most ratings? How do ratings compare across these company locations?
+```{r}
+sort(table(choco$Company.Location), decreasing = TRUE)
+
+mean(choco$Rating[choco$Company.Location == "U.S.A."])
+mean(choco$Rating[choco$Company.Location == "France"])
+mean(choco$Rating[choco$Company.Location == "Canada"])
+```
+
+The highest average ratings are from Canada, followed by France, then the USA. 
+
+## Brainstorm/write down an interesting question about the dataset. 
+
+Is there a relationship between the origin of the beans and the number of reviews for chocolates with that bean origin?
+
+## Answer the question
+```{r}
+beans <- table(choco$Specific.Bean.Origin)
+barplot(beans)
+
+head(sort(table(choco$Specific.Bean.Origin), decreasing = TRUE))
+
+
+```
+
+We can clearly see that most reviews are for chocolate with beans from Madacascar, followed by Peru, then Ecuador, Dominican Republic, Venezuela, and Chuao. This likely indicates that these countries product the greatest percentage of the worlds cocoa beans. 
+
+## Write one paragraph commenting on the workflow. 
+
+To solve this problem, I simply needed to calculate the number of reviews for each of the different cocoa bean manufacturing countries. I did this by using the table() function with the Specific.Bean.Origin column in the dataset. I also sorted it descending, to see which countries produce the most beans. Since there were too many places of origin to conveniently view, I just looked at the head of the dataset after sorting to see which countries produced the most beans. 
